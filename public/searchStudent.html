@@ -1,0 +1,41 @@
+<!-- filename: addVote.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Add Student</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+
+<body>
+
+  <label for="lname">Last Name:</label>
+  <input type="text" id="lname" name="lname"><br><br>
+  <button onclick="searchStudent()">Submit</button>
+  <br>
+  <br>
+  <div id="mydiv" name="mydiv"></div>
+  <script>
+
+    function searchStudent() {
+      var lname_val = $("#lname").val();
+
+      $.ajax({
+        url: "http://localhost:5678/students/" + lname_val,
+        type: "get",
+        dataType: "json",
+        success: function (response) {
+          console.log(response)
+          $("#mydiv").text(response.message);
+        },
+        error: function (xhr) {
+          console.log(xhr.responseText)
+          $("#mydiv").text('error: ' + xhr.responseText);
+        }
+      });
+    }
+
+  </script>
+
+</body>
+
+</html>
