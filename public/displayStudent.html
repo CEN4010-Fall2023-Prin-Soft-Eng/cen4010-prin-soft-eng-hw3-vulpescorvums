@@ -1,0 +1,38 @@
+<!-- filename: displayStudent.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Display Student</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+
+
+  <label for="record_id">Student ID:</label>
+  <input type="text" id="record_id" name="record_id"><br><br>
+  <button onclick="displayStudent()">Submit</button>
+  <br>
+  <br>
+  <div id="mydiv" name="mydiv"></div>
+  <script>
+
+    function displayStudent() {
+      var id_val = $("#record_id").val();
+      $.ajax({
+        url: "http://localhost:5678/students/" + id_val,
+        type: "get",
+        success: function (response) {
+          //console.log(response)
+          $("#mydiv").text(response);
+        },
+        error: function (xhr) {
+          //console.log(xhr.responseText)
+          $("#mydiv").text('error: ' + xhr.responseText);
+        }
+      });
+    }
+
+  </script>
+
+</body>
+</html>

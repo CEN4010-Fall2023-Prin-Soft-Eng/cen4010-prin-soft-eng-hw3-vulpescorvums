@@ -1,0 +1,43 @@
+<!-- filename: displayStudent.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Display Student</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+
+  <button onclick="getStudents()">Submit</button>
+  <br>
+  <br>
+  <div id="mydiv" name="mydiv"></div>
+<script>
+    function getStudents() {
+      $.ajax({
+        url: "http://localhost:5678/students", // The endpoint for listing all students
+        type: "GET",
+        //dataType: "json", // Specify the data type of the response
+        success: function (students) {
+          displayStudents(students);
+        },
+        error: function (xhr) {
+          console.log(xhr.responseText);
+          $("#mydiv").text('Error: ' + xhr.responseText);
+        }
+      });
+    }
+
+    function displayStudents(students) {
+      var studentListHTML = '<h2>Student List</h2>';
+      if (students.length > 0) {
+        studentListHTML += '<ul>';
+        students.forEach(function (student) {
+          studentListHTML += '<li>' + student.first_name + ' ' + student.last_name + ' (GPA: ' + student.gpa + ', Enrolled: ' + student.enrolled + ')</li>';
+        });
+        studentListHTML += '</ul>';
+      } else {
+        studentListHTML += '<p>No students found.</p>';
+      }
+      $("#studentList").html(studentListHTML);
+    }
+</script>

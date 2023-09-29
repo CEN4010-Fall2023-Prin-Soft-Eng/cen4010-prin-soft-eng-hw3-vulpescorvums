@@ -1,8 +1,8 @@
-<!-- filename: addVote.html -->
+<!-- filename: searchStudent.html -->
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Add Student</title>
+  <title>Search Student</title>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 
@@ -18,17 +18,20 @@
 
     function searchStudent() {
       var lname_val = $("#lname").val();
-
+      
       $.ajax({
-        url: "http://localhost:5678/students/" + lname_val,
+        url: "http://localhost:5678/students/search/" + lname_val,
         type: "get",
-        dataType: "json",
         success: function (response) {
-          console.log(response)
-          $("#mydiv").text(response.message);
+          let studentData = response.students;
+          //console.log(response)
+          $("#mydiv").empty();
+          studentData.forEach(function(student) {
+            $('#mydiv').append('<p>Record ID: ${student.record_id}, First Name: {student.first_name</p>'})
+          });
         },
         error: function (xhr) {
-          console.log(xhr.responseText)
+          console.log(xhr)
           $("#mydiv").text('error: ' + xhr.responseText);
         }
       });

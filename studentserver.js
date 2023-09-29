@@ -186,7 +186,7 @@ function readFiles(files, arr, res) {
  *         description: Error. The requested resource was not found.
  */
 
-app.get('/students/: last_name', function (req, res) {
+app.get('/students/:last_name', function (req, res) {
   var last_name = req.params.last_name
   var obj = {};
   var arr = [];
