@@ -131,7 +131,7 @@ app.post('/students', function (req, res) {//creates a new student obj with all 
  *       404:
  *         description: Error. The requested resource was not found.
  */
-app.get('/students/:record_id', function (req, res) {
+app.get('/students/record/:record_id', function (req, res) {
   var record_id = req.params.record_id;
 
   fs.readFile("students/" + record_id + ".json", "utf8", function (err, data) {
@@ -186,18 +186,28 @@ function readFiles(files, arr, res) {
  *         description: Error. The requested resource was not found.
  */
 
-app.get('/students/:last_name', function (req, res) {
-  var last_name = req.params.last_name
-  var obj = {};
-  var arr = [];
-
+app.get('/students/lastname/:last_name', function (req, res) {
+  var last_name = req.params.last_name;
+  
   glob("students/*.json", null, function (err, files) {
     if (err) {
       return res.status(500).send({ "message": "error - internal server error" });
     }
-    console.log("list of students to be read", files)
 
-    readFiles(files, [], res);
+    // Find the file that matches the last name
+    var found = false;
+    for (var i = 0; i < files.length; i++) {
+      var file = files[i];
+      var studentData = JSON.parse(fs.readFileSync(file, "utf8"));
+      if (studentData.last_name === last_name) {
+        found = true;
+        return res.status(200).send(studentData);
+      }
+    }
+
+    if (!found) {
+      return res.status(404).send({ "message": "error - resource not found" });
+    }
   });
 });
 
